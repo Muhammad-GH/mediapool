@@ -15,15 +15,18 @@
         <h1>Daylight: {{ response.Daylight }}</h1>
         <h1>Sunrise: {{ response.Sunrise }}</h1>
         <h1>Sunset: {{ response.Sunset }}</h1>
-        <button type="submit" class="btn btn-primary">Add</button>
+        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </template>
 
 <script>
+var csrf_token = $('meta[name="csrf-token"]').attr("content");
 export default {
     data() {
         return {
-            fields: {},
+            fields: {
+                _token: csrf_token
+            },
             errors: {},
             response: {}
         };
