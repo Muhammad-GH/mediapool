@@ -16,4 +16,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::post('/submit', 'App\Http\Controllers\ContactFormController@submit');
+
+Route::group([
+    'middleware' => ['cors'],
+], function ($router) {
+    //Add you routes here, for example:
+    Route::post('/submit', 'App\Http\Controllers\ContactFormController@submit');
+});

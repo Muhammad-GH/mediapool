@@ -11,16 +11,20 @@
             />
         </div>
 
-        <h1>City: {{ response.Name }}</h1>
-        <h1>Daylight: {{ response.Daylight }}</h1>
-        <h1>Sunrise: {{ response.Sunrise }}</h1>
-        <h1>Sunset: {{ response.Sunset }}</h1>
+        <li v-for="(res, index) in response" :key="index">
+            <h3>City: {{ res.Name }}</h3>
+            <h3>Daylight: {{ res.Daylight }}</h3>
+            <h3>Sunrise: {{ res.Sunrise }}</h3>
+            <h3>Sunset: {{ res.Sunset }}</h3>
+        </li>
+
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 </template>
 
 <script>
 var csrf_token = $('meta[name="csrf-token"]').attr("content");
+
 export default {
     data() {
         return {
@@ -28,7 +32,7 @@ export default {
                 _token: csrf_token
             },
             errors: {},
-            response: {}
+            response: []
         };
     },
     methods: {
@@ -37,8 +41,12 @@ export default {
             axios
                 .post("/submit", this.fields)
                 .then(response => {
-                    console.log(response);
-                    this.response = response.data;
+                    var obj = {};
+                    $.each(response.data, function(key, value) {
+                        obj[key] = value;
+                    });
+                    this.response.push(obj);
+                    console.log(this.response);
                 })
                 .catch(error => {
                     if (error.response.status === 422) {
